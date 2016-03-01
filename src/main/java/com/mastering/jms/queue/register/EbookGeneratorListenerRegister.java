@@ -1,6 +1,5 @@
-package com.mastering.jms.register;
+package com.mastering.jms.queue.register;
 
-import java.util.Properties;
 import java.util.Scanner;
 
 import javax.jms.ConnectionFactory;
@@ -10,16 +9,13 @@ import javax.jms.Queue;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-import com.mastering.jms.producer.EbookGeneratorListener;
+import com.mastering.jms.properties.JndiPropertiesConfiguration;
+import com.mastering.jms.queue.producer.EbookGeneratorListener;
 
 public class EbookGeneratorListenerRegister {
 
 	public static void main(String[] args) throws NamingException {
-		Properties properties = new Properties();
-		properties.setProperty("java.naming.factory.initial", "org.jboss.naming.remote.client.InitialContextFactory");
-		properties.setProperty("java.naming.provider.url", "http-remoting://localhost:8080");
-		
-		InitialContext ic = new InitialContext(properties);
+		InitialContext ic = new InitialContext(JndiPropertiesConfiguration.configure());
 		
 		ConnectionFactory factory = (ConnectionFactory) ic.lookup("jms/RemoteConnectionFactory");
 		
