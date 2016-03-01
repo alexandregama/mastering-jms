@@ -1,4 +1,4 @@
-package com.mastering.jms.queue.producer;
+package com.mastering.jms.queue.consumer;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
