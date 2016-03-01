@@ -1,38 +1,40 @@
-package com.mastering.jms.queue.register;
+package com.mastering.jms.topic.register;
 
 import java.util.Scanner;
 
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSConsumer;
 import javax.jms.JMSContext;
-import javax.jms.Queue;
+import javax.jms.Topic;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 import com.mastering.jms.properties.JndiPropertiesConfiguration;
-import com.mastering.jms.queue.consumer.EbookGeneratorListener;
+import com.mastering.jms.topic.subscriber.TaxInvoiceListener;
 
-public class EbookGeneratorListenerRegister {
+public class TaxInvoiceListenerRegister {
 
 	public static void main(String[] args) throws NamingException {
 		InitialContext ic = new InitialContext(JndiPropertiesConfiguration.configure());
 		
 		ConnectionFactory factory = (ConnectionFactory) ic.lookup("jms/RemoteConnectionFactory");
 		
-		Queue queue = (Queue) ic.lookup("jms/QUEUE.EBOOK");
+		Topic topic = (Topic) ic.lookup("jms/TOPIC.INVOICE");
 		
 		try (JMSContext context = factory.createContext("jms", "jms2")) {
-			JMSConsumer consumer = context.createConsumer(queue);
-			consumer.setMessageListener(new EbookGeneratorListener());
+			JMSConsumer consumer = context.createConsumer(topic);
+			
+			consumer.setMessageListener(new TaxInvoiceListener());
 			
 			context.start();
+			System.out.println("TaxInvoice Topic Consumer is up and waiting for messages");
 			
 			Scanner scanner = new Scanner(System.in);
-			System.out.println("EbookGenerator is up an waiting for messages...");
+			scanner.nextLine();
 			
-			scanner.nextLine(); //Enter to stop receive messages
 			scanner.close();
 			context.stop();
 		}
 	}
+	
 }

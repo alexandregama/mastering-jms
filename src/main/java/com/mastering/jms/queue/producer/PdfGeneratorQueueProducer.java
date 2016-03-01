@@ -9,23 +9,20 @@ import javax.naming.NamingException;
 
 import com.mastering.jms.properties.JndiPropertiesConfiguration;
 
-public class MessageSenderToQueue {
+public class PdfGeneratorQueueProducer {
 
 	public static void main(String[] args) throws NamingException {
 		InitialContext ic = new InitialContext(JndiPropertiesConfiguration.configure());
 		
 		ConnectionFactory factory = (ConnectionFactory) ic.lookup("jms/RemoteConnectionFactory");
 		
-		Queue queue = (Queue) ic.lookup("jms/QUEUE.EBOOK");
+		Queue queue = (Queue) ic.lookup("jms/QUEUE.PDF");
 		
 		try (JMSContext context = factory.createContext("jms", "jms2")) {
 			JMSProducer producer = context.createProducer();
-			
 			producer.send(queue, "{\"id\": \"1\", \"code\": \"SOA\", \"name\": \"SOA Architecture\"}");
-			
-			System.out.println("Message sent!");
+				
+			System.out.println("Message to Queue PDF was sent");
 		}
-		
 	}
-	
 }
