@@ -1,5 +1,7 @@
 package com.mastering.jms.queue.producer;
 
+import java.util.Scanner;
+
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
 import javax.jms.JMSContext;
@@ -18,11 +20,16 @@ public class KindleGeneratorProducer {
 		
 		Destination queue = (Destination) ic.lookup("jms/QUEUE.KINDLE");
 		
-		try (JMSContext context = factory.createContext("jms", "jms2")) {
+		try (JMSContext context = factory.createContext("jms", "jms2");  Scanner scanner = new Scanner(System.in)) {
 			JMSProducer producer = context.createProducer();
-			producer.send(queue, "{\"id\": \"1\", \"code\": \"SOA\", \"name\": \"SOA Architecture\"}");
 			
-			System.out.println("Message Sent to Kindle Queue");
+			System.out.println("Send your message: ");
+			while (scanner.hasNext()) {
+				String content = scanner.nextLine();
+				producer.send(queue, content);
+				
+				System.out.println("Content has been sent: " + content);
+			}
 		}
 	}
 	

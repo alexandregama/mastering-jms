@@ -10,9 +10,9 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 import com.mastering.jms.properties.JndiPropertiesConfiguration;
-import com.mastering.jms.queue.consumer.KindleGeneratorListener;
+import com.mastering.jms.queue.consumer.KindlePdfGeneratorListener;
 
-public class KindleGeneratorListenerRegister {
+public class KindlePdfGeneratorListenerRegister {
 
 	public static void main(String[] args) throws NamingException {
 		InitialContext ic = new InitialContext(JndiPropertiesConfiguration.configure());
@@ -23,16 +23,16 @@ public class KindleGeneratorListenerRegister {
 		
 		try (JMSContext context = factory.createContext("jms", "jms2")) {
 			JMSConsumer consumer = context.createConsumer(queue);
-			consumer.setMessageListener(new KindleGeneratorListener());
+			consumer.setMessageListener(new KindlePdfGeneratorListener());
 			context.start();
-			System.out.println("Watching Kindle Ebook...");
+			System.out.println("Watching Kindle PDF...");
 			
 			Scanner scanner = new Scanner(System.in);
 			scanner.nextLine(); //Enter to stop watching
 			scanner.close();
 			
 			context.stop();
-			System.out.println("KindleGeneratorListener has been stoped!");
+			System.out.println("Kindle PDF has been stoped!");
 		}
 	}
 	
